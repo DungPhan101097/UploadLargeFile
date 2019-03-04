@@ -77,18 +77,34 @@ public class UploadFileServer implements FileUpload.Iface {
                 String currentChunk = getCurTmpDir(fileName, ip) + "/Chunk" + i + "_" + getRealFileName(fileName, ip);
                 System.out.println(currentChunk);
 
-                readFile(currentChunk, out);
+                joinFile(currentChunk, out);
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(UploadFileServer.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(UploadFileServer.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
+        // Remove folder current tmp
+        removeFolder(getCurTmpDir(fileName, ip));
+        
         return resultFlag;
     }
+    
+    private void removeFolder(String pathCurTmp) {
+       File currentTmpDir = new File(pathCurTmp);
+       
+       if (currentTmpDir.exists()) {
+           File[] children = currentTmpDir.listFiles();
+           
+           for (File file : children) {
+               file.delete();
+           }
+           currentTmpDir.delete();
+       }
+    }
 
-    private byte[] readFile(String fileName, BufferedOutputStream out) {
+    private byte[] joinFile(String fileName, BufferedOutputStream out) {
         byte[] data = new byte[BUFFER_SIZE];
         int byteRead = 0;
         try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileName))) {
@@ -131,5 +147,4 @@ public class UploadFileServer implements FileUpload.Iface {
 
         return builder.toString();
     }
-
 }
