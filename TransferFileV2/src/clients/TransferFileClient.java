@@ -80,7 +80,7 @@ public class TransferFileClient {
                     } else {
                         fileInfo.chunk = ByteBuffer.wrap(data);
                     }
-                    client.uploadFile(fileInfo);
+                    client.uploadFile(fileInfo, BUFFER_SIZE);
                 }
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(TransferFileClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,8 +90,6 @@ public class TransferFileClient {
         });
         
         t1.start();
-        t1.join();
-        client.uploadSuccess(true, fileName, fileInfo.ip);
     }
     
     private static String getIp() {

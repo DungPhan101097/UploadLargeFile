@@ -9,6 +9,5 @@ struct FileInfo {
 }
 
 service FileUpload {
-	bool uploadFile(1: FileInfo fileInfo)
-	bool uploadSuccess(1: bool success, 2: string fileName, 3: string ip)
+	bool uploadFile(1: bool success, 2: i64 recordSize)
 }
